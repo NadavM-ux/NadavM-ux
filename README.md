@@ -20,10 +20,12 @@ full-stack projects in TypeScript and Python, and teach Python part-time at [Aha
 | [Book List API](https://github.com/NadavM-ux/book-list) | Small REST API built while learning Git workflows | Python, FastAPI |
 | [C++ coursework](https://github.com/NadavM-ux/cpp-basics) | Data structures and OOP exercises | C++ |
 
-## Stack
+## Tech stack
 
-TypeScript / JavaScript · Python · Java · C / C++ · C# · SQL  
-Node.js · NestJS · Next.js / React · FastAPI · PostgreSQL · Redis · Docker · Git
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/stack-dark.svg">
+  <img alt="Tech stack. Languages: TypeScript, JavaScript, Python, Java, C++, C, C#. Backend: Node.js, NestJS, FastAPI, PostgreSQL, Redis. Frontend: React, Next.js, Tailwind CSS, HTML5, CSS. ML and Data: scikit-learn, pandas, NumPy, OpenCV, Jupyter. Tools: Git, GitHub Actions, Docker, Linux, Claude Code. Cloud and Edge: Vercel, Cloudflare, Raspberry Pi. Creative: Premiere Pro, After Effects, Blender." src="assets/stack-light.svg" width="840">
+</picture>
 
 ## Contact
 
