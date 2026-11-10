@@ -2,7 +2,9 @@
 """Build the clickable tech-stack tiles for this profile README.
 
 GitHub shows README images as flat pictures, so a link inside one big image cannot be clicked.
-Each tool is therefore its own small animated SVG (light and dark) in assets/stack/, wrapped in a link.
+Each tool is therefore its own small animated SVG (light and dark) in assets/stack/, wrapped in a link,
+All tiles share one width and sit in a centred wall, so they form an even grid at any screen width
+(five columns on a desktop, fewer on narrow screens) in the category order of GROUPS.
 
 Run from anywhere:  python3 scripts/build_stack.py
 It rewrites assets/stack/ and the block between the stack markers in README.md.
@@ -93,10 +95,11 @@ THEMES = {
                   sheen="#0969da", sheen_op=0.10),
 }
 WORDMARKS = {"mysql", "scikitlearn"}  # logos with text in them need a bigger glyph to stay legible
-CH, CELL, RX, GAP, PAD_L, PAD_R, LCOL = 32, 32, 6, 8, 10, 12, 122
+CH, CELL, RX, MARGIN, PAD_L, PAD_R = 32, 32, 6, 4, 10, 12  # MARGIN on each side gives an 8px gap between tiles
+README_WIDTH = 846  # GitHub profile README column on a 1280px-wide screen, used to time the animations
 TOP, BOTTOM = 2, 8  # room inside each image for the rise animation
 H = TOP + CH + BOTTOM
-ROW_PITCH = H + 5  # approximate rendered row height, used to time the light sweep across rows
+ROW_PITCH = H + 5  # approximate rendered line height, used to time the light sweep across lines
 SPEED = 0.641  # sweep speed in px per ms
 SANS = '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif'
 MONO = 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace'
@@ -135,10 +138,14 @@ def text_width(name):
     return WIDTHS[name] * 1.04 + 2 if name in WIDTHS else len(name) * 7.6 + 2
 
 
+def label_area():
+    return max(text_width(tool[0]) for _, _, tools in GROUPS for tool in tools)
+
+
 def tile_svg(theme, tool, x, row, col):
     t, e = THEMES[theme], html.escape
     name, slug, cell = tool[0], tool[1], tool[2]
-    tw = text_width(name)
+    tw = label_area()
     w = round(CELL + PAD_L + tw + PAD_R)
     dist = w + 200
     sweep_pct = dist / SPEED / 9000 * 100
@@ -150,7 +157,7 @@ def tile_svg(theme, tool, x, row, col):
     else:
         logo = f'<text class="m" x="{CELL / 2:g}" y="20.6" text-anchor="middle" fill="#{tool[5]}">{e(tool[4])}</text>'
     return "\n".join([
-        f'<svg xmlns="http://www.w3.org/2000/svg" width="{w + GAP}" height="{H}" viewBox="0 0 {w + GAP} {H}" role="img" aria-label="{e(name)}">',
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{w + 2 * MARGIN}" height="{H}" viewBox="0 0 {w + 2 * MARGIN} {H}" role="img" aria-label="{e(name)}">',
         f'  <title>{e(name)}</title>',
         f'  <!-- Logo from Simple Icons {SI_VERSION} (CC0-1.0) where available. Trademarks belong to their owners. -->',
         '  <style>',
@@ -168,37 +175,20 @@ def tile_svg(theme, tool, x, row, col):
         f'      <stop offset=".5" stop-color="{t["sheen"]}" stop-opacity="{t["sheen_op"]}"/>',
         f'      <stop offset="1" stop-color="{t["sheen"]}" stop-opacity="0"/>',
         '    </linearGradient>',
-        f'    <clipPath id="c"><rect x="0" y="{TOP}" width="{w}" height="{CH}" rx="{RX}"/></clipPath>',
+        f'    <clipPath id="c"><rect x="{MARGIN}" y="{TOP}" width="{w}" height="{CH}" rx="{RX}"/></clipPath>',
         '  </defs>',
         '  <g class="tile">',
-        f'    <g transform="translate(0 {TOP})">',
+        f'    <g transform="translate({MARGIN} {TOP})">',
         f'      <rect x=".5" y=".5" width="{w - 1}" height="{CH - 1}" rx="{RX - .5}" fill="{t["chip"]}"/>',
         f'      <path d="{CELL_PATH}" fill="#{cell}"/>',
         f'      {logo}',
         f'      <text class="t" x="{CELL + PAD_L + tw / 2:.1f}" y="20.6" text-anchor="middle">{e(name)}</text>',
         f'      <rect x=".5" y=".5" width="{w - 1}" height="{CH - 1}" rx="{RX - .5}" fill="none" stroke="{t["stroke"]}"/>',
         '    </g>',
-        f'    <g clip-path="url(#c)"><g transform="skewX(-18)"><rect class="sheen" x="-175" y="-4" width="160" height="{H + 8}" fill="url(#g)"/></g></g>',
+        f'    <g clip-path="url(#c)"><g transform="skewX(-18)"><rect class="sheen" x="{MARGIN - 175}" y="-4" width="160" height="{H + 8}" fill="url(#g)"/></g></g>',
         '  </g>',
         '</svg>',
-        '']), w + GAP
-
-
-def row_svg(theme, label, row):
-    t, e = THEMES[theme], html.escape
-    return "\n".join([
-        f'<svg xmlns="http://www.w3.org/2000/svg" width="{LCOL}" height="{H}" viewBox="0 0 {LCOL} {H}" role="img" aria-label="{e(label)}">',
-        f'  <title>{e(label)}</title>',
-        '  <style>',
-        f'    .lbl {{ font: 600 10.5px {MONO}; letter-spacing: 1.4px; fill: {t["label"]}; }}',
-        f'    .row {{ animation: rise .65s cubic-bezier(.2, .7, .2, 1) {100 + row * 80}ms both; }}',
-        f'    {RISE}',
-        '    @media (prefers-reduced-motion: reduce) { .row { animation: none; } }',
-        '  </style>',
-        f'  <g class="row"><rect x="0" y="{TOP + 13}" width="6" height="6" fill="{t["accent"]}"/>'
-        f'<text class="lbl" x="14" y="{TOP + 20}">{e(label)}</text></g>',
-        '</svg>',
-        ''])
+        '']), w + 2 * MARGIN
 
 
 def picture(stem, alt):
@@ -208,28 +198,24 @@ def picture(stem, alt):
 
 def main():
     ASSETS.mkdir(parents=True, exist_ok=True)
-    written, rows = set(), []
-    for row, (label, alt_name, tools) in enumerate(GROUPS):
-        stem = f"row-{row + 1}"
+    tools = [tool for _, _, group in GROUPS for tool in group]
+    tile = round(CELL + PAD_L + label_area() + PAD_R) + 2 * MARGIN
+    columns = README_WIDTH // tile
+    left = (README_WIDTH - columns * tile) / 2  # where the grid starts on a wide screen
+    written, parts = set(), []
+    for i, tool in enumerate(tools):
+        row, col = divmod(i, columns)
+        fid = file_id(tool[0])
         for theme in THEMES:
-            (ASSETS / f"{stem}-{theme}.svg").write_text(row_svg(theme, label, row))
-            written.add(f"{stem}-{theme}.svg")
-        parts, x = [f'<a href="#tech-stack">{picture(stem, alt_name)}</a>'], LCOL
-        for col, tool in enumerate(tools):
-            fid = file_id(tool[0])
-            for theme in THEMES:
-                svg, width = tile_svg(theme, tool, x, row, col)
-                (ASSETS / f"{fid}-{theme}.svg").write_text(svg)
-                written.add(f"{fid}-{theme}.svg")
-            href, why = tool[3]
-            parts.append(f'<a href="{html.escape(href)}" title="{html.escape(f"{tool[0]}: {why}")}">{picture(fid, tool[0])}</a>')
-            x += width
-        print(f"  {label:13s} {x}px wide")
-        rows.append("".join(parts))
+            svg, _ = tile_svg(theme, tool, left + col * tile, row, col)
+            (ASSETS / f"{fid}-{theme}.svg").write_text(svg)
+            written.add(f"{fid}-{theme}.svg")
+        href, why = tool[3]
+        parts.append(f'<a href="{html.escape(href)}" title="{html.escape(f"{tool[0]}: {why}")}">{picture(fid, tool[0])}</a>')
     for stale in ASSETS.glob("*.svg"):
         if stale.name not in written:
             stale.unlink()
-    block = ("<!-- stack:start (generated by scripts/build_stack.py) -->\n<p>\n" + "<br>\n".join(rows)
+    block = ("<!-- stack:start (generated by scripts/build_stack.py) -->\n<p align=\"center\">\n" + "".join(parts)
              + "\n</p>\n<!-- stack:end -->")
     readme = ROOT / "README.md"
     text = readme.read_text()
@@ -237,7 +223,7 @@ def main():
     if n != 1:
         raise SystemExit("README.md needs exactly one <!-- stack:start --> ... <!-- stack:end --> block")
     readme.write_text(new)
-    print(f"wrote {len(written)} images and the README block")
+    print(f"{len(tools)} tiles, {tile}px each, {columns} columns on a desktop; wrote {len(written)} images and the README block")
 
 
 if __name__ == "__main__":

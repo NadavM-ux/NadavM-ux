@@ -1,13 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="111" height="42" viewBox="0 0 111 42" role="img" aria-label="HTML5">
+<svg xmlns="http://www.w3.org/2000/svg" width="161" height="42" viewBox="0 0 161 42" role="img" aria-label="HTML5">
   <title>HTML5</title>
   <!-- Logo from Simple Icons 16.36.0 (CC0-1.0) where available. Trademarks belong to their owners. -->
   <style>
     .t { font: 500 13px -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; fill: #1f2328; }
     .m { font: 700 13px -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
-    .tile { animation: rise .65s cubic-bezier(.2, .7, .2, 1) 395ms both; }
+    .tile { animation: rise .65s cubic-bezier(.2, .7, .2, 1) 385ms both; }
     @keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-    .sheen { animation: sweep 9s linear 2995ms infinite; }
-    @keyframes sweep { 0% { transform: translateX(0); } 5.25%, 100% { transform: translateX(303px); } }
+    .sheen { animation: sweep 9s linear 2555ms infinite; }
+    @keyframes sweep { 0% { transform: translateX(0); } 6.12%, 100% { transform: translateX(353px); } }
     @media (prefers-reduced-motion: reduce) { .tile { animation: none; } .sheen { display: none; } }
   </style>
   <defs>
@@ -16,16 +16,16 @@
       <stop offset=".5" stop-color="#0969da" stop-opacity="0.1"/>
       <stop offset="1" stop-color="#0969da" stop-opacity="0"/>
     </linearGradient>
-    <clipPath id="c"><rect x="0" y="2" width="103" height="32" rx="6"/></clipPath>
+    <clipPath id="c"><rect x="4" y="2" width="153" height="32" rx="6"/></clipPath>
   </defs>
   <g class="tile">
-    <g transform="translate(0 2)">
-      <rect x=".5" y=".5" width="102" height="31" rx="5.5" fill="#f6f8fa"/>
+    <g transform="translate(4 2)">
+      <rect x=".5" y=".5" width="152" height="31" rx="5.5" fill="#f6f8fa"/>
       <path d="M6 .5H32V31.5H6A5.5 5.5 0 0 1 .5 26V6A5.5 5.5 0 0 1 6 .5Z" fill="#E34F26"/>
       <path transform="translate(8 8) scale(0.6667)" fill="#1f2328" d="M1.5 0h21l-1.91 21.563L11.977 24l-8.564-2.438L1.5 0zm7.031 9.75l-.232-2.718 10.059.003.23-2.622L5.412 4.41l.698 8.01h9.126l-.326 3.426-2.91.804-2.955-.81-.188-2.11H6.248l.33 4.171L12 19.351l5.379-1.443.744-8.157H8.531z"/>
-      <text class="t" x="66.4" y="20.6" text-anchor="middle">HTML5</text>
-      <rect x=".5" y=".5" width="102" height="31" rx="5.5" fill="none" stroke="#d0d7de"/>
+      <text class="t" x="91.5" y="20.6" text-anchor="middle">HTML5</text>
+      <rect x=".5" y=".5" width="152" height="31" rx="5.5" fill="none" stroke="#d0d7de"/>
     </g>
-    <g clip-path="url(#c)"><g transform="skewX(-18)"><rect class="sheen" x="-175" y="-4" width="160" height="50" fill="url(#g)"/></g></g>
+    <g clip-path="url(#c)"><g transform="skewX(-18)"><rect class="sheen" x="-171" y="-4" width="160" height="50" fill="url(#g)"/></g></g>
   </g>
 </svg>
