@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="840" height="120" viewBox="0 0 840 120" role="img" aria-label="Nadav Magen. Software Engineering student at SCE. Building Reply22. Teaching Python at Aharai! Tech.">
+  <style>
+    .name { font: 700 44px -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; fill: #f0f6fc; }
+    .prompt { font: 600 21px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fill: #4493f8; }
+    .line { font: 400 21px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fill: #9198a1; opacity: 0; }
+    .bar { stroke: #4493f8; stroke-width: 3; stroke-linecap: round; stroke-dasharray: 120; stroke-dashoffset: 0;
+           animation: draw 1.2s ease-out .3s both; }
+    @keyframes draw { from { stroke-dashoffset: 120; } to { stroke-dashoffset: 0; } }
+    @keyframes cycle {
+      0%        { opacity: 0; transform: translateY(8px); }
+      5%, 29%   { opacity: 1; transform: translateY(0); }
+      33%, 100% { opacity: 0; transform: translateY(-8px); }
+    }
+    .l1 { opacity: 1; animation: cycle 9s ease-in-out infinite; }
+    .l2 { animation: cycle 9s ease-in-out 3s infinite; }
+    .l3 { animation: cycle 9s ease-in-out 6s infinite; }
+    @media (prefers-reduced-motion: reduce) {
+      .line, .bar { animation: none; }
+    }
+  </style>
+  <text class="name" x="2" y="50">Nadav Magen</text>
+  <line class="bar" x1="4" y1="68" x2="124" y2="68"/>
+  <text class="prompt" x="2" y="104">&#8250;</text>
+  <text class="line l1" x="26" y="104">Software Engineering student at SCE</text>
+  <text class="line l2" x="26" y="104">Building Reply22: Instagram comment-to-DM automation</text>
+  <text class="line l3" x="26" y="104">Teaching Python at Aharai! Tech</text>
+</svg>

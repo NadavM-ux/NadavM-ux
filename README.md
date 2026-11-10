@@ -1,4 +1,7 @@
-# Nadav Magen
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/header-dark.svg">
+  <img alt="Nadav Magen. Software Engineering student at SCE, building Reply22, teaching Python at Aharai! Tech." src="assets/header-light.svg" width="840">
+</picture>
 
 Third-year Software Engineering student at SCE College of Engineering (Be'er Sheva, Israel). I build backend and
 full-stack projects in TypeScript and Python, and teach Python part-time at [Aharai! Tech](https://aharai.org.il/enaharaitech/).
