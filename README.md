@@ -24,7 +24,7 @@ full-stack projects in TypeScript and Python, and teach Python part-time at [Aha
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/stack-dark.svg">
-  <img alt="Tech stack. Languages: TypeScript, JavaScript, Python, Java, C++, C, C#. Backend: Node.js, NestJS, FastAPI, PostgreSQL, Redis. Frontend: React, Next.js, Tailwind CSS, HTML5, CSS. ML and Data: scikit-learn, pandas, NumPy, OpenCV, Jupyter. Tools: Git, GitHub Actions, Docker, Linux, Claude Code. Cloud and Edge: Vercel, Cloudflare, Raspberry Pi. Creative: Premiere Pro, After Effects, Blender." src="assets/stack-light.svg" width="840">
+  <img alt="Tech stack. Languages: TypeScript, JavaScript, Python, Java, C++, C, C#. Backend and databases: Node.js, NestJS, FastAPI, PostgreSQL, MySQL, Redis. Frontend: React, Next.js, Tailwind CSS, HTML5, CSS. ML and data: scikit-learn, pandas, NumPy, OpenCV, Jupyter. Tools: Git, GitHub Actions, Docker, Linux, Claude Code. Cloud and edge: Vercel, Cloudflare, Raspberry Pi. Creative: Photoshop, Premiere Pro, After Effects, Blender." src="assets/stack-light.svg" width="840">
 </picture>
 
 ## Contact
