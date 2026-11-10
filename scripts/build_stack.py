@@ -5,6 +5,7 @@ GitHub shows README images as flat pictures, so a link inside one big image cann
 Each tool is therefore its own small animated SVG (light and dark) in assets/stack/, wrapped in a link,
 All tiles share one width and sit in a centred wall, so they form an even grid at any screen width
 (five columns on a desktop, fewer on narrow screens) in the category order of GROUPS.
+File names carry a short hash of their content, so an edited tile gets a new address and never shows stale.
 
 Run from anywhere:  python3 scripts/build_stack.py
 It rewrites assets/stack/ and the block between the stack markers in README.md.
@@ -13,6 +14,7 @@ To add a tool, add a line to GROUPS. Logos come from Simple Icons (CC0-1.0), pin
 cached in scripts/.icons/. Label widths come from scripts/stack_widths.json (measured in Chrome); a new
 label without a measurement gets an estimate.
 """
+import hashlib
 import html
 import json
 import pathlib
@@ -191,9 +193,15 @@ def tile_svg(theme, tool, x, row, col):
         '']), w + 2 * MARGIN
 
 
-def picture(stem, alt):
-    return (f'<picture><source media="(prefers-color-scheme: dark)" srcset="assets/stack/{stem}-dark.svg">'
-            f'<img alt="{html.escape(alt)}" src="assets/stack/{stem}-light.svg"></picture>')
+def picture(files, alt):
+    return (f'<picture><source media="(prefers-color-scheme: dark)" srcset="assets/stack/{files["dark"]}">'
+            f'<img alt="{html.escape(alt)}" src="assets/stack/{files["light"]}"></picture>')
+
+
+def save(stem, theme, svg):
+    name = f"{stem}-{theme}-{hashlib.sha1(svg.encode()).hexdigest()[:8]}.svg"
+    (ASSETS / name).write_text(svg)
+    return name
 
 
 def main():
@@ -205,13 +213,10 @@ def main():
     written, parts = set(), []
     for i, tool in enumerate(tools):
         row, col = divmod(i, columns)
-        fid = file_id(tool[0])
-        for theme in THEMES:
-            svg, _ = tile_svg(theme, tool, left + col * tile, row, col)
-            (ASSETS / f"{fid}-{theme}.svg").write_text(svg)
-            written.add(f"{fid}-{theme}.svg")
+        files = {theme: save(file_id(tool[0]), theme, tile_svg(theme, tool, left + col * tile, row, col)[0]) for theme in THEMES}
+        written.update(files.values())
         href, why = tool[3]
-        parts.append(f'<a href="{html.escape(href)}" title="{html.escape(f"{tool[0]}: {why}")}">{picture(fid, tool[0])}</a>')
+        parts.append(f'<a href="{html.escape(href)}" title="{html.escape(f"{tool[0]}: {why}")}">{picture(files, tool[0])}</a>')
     for stale in ASSETS.glob("*.svg"):
         if stale.name not in written:
             stale.unlink()
